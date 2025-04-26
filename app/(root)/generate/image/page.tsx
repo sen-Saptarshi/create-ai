@@ -13,7 +13,13 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { Download, Sparkles, Shuffle, ImageIcon } from "lucide-react";
-import { enhancePrompt, getCameraAngleModifier, getLightingModifier, getRandomPrompt, getStyleModifier } from "@/lib/prompt-utils";
+import {
+  enhancePrompt,
+  getCameraAngleModifier,
+  getLightingModifier,
+  getRandomPrompt,
+  getStyleModifier,
+} from "@/lib/prompt-utils";
 import { generateImage } from "@/lib/actions";
 import Image from "next/image";
 
@@ -237,8 +243,8 @@ export default function ImageGenerator() {
                     No image generated yet
                   </h3>
                   <p className="text-sm text-gray-500 mt-2">
-                    Enter a prompt and click "Generate Image" to create your
-                    image
+                    Enter a prompt and click &quot;Generate Image&quot; to
+                    create your image
                   </p>
                 </div>
               )}
@@ -249,5 +255,3 @@ export default function ImageGenerator() {
     </div>
   );
 }
-
-

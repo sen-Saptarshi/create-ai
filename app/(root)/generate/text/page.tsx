@@ -44,6 +44,7 @@ export default function Page() {
       const text = await res.text();
       setResponse(text);
     } catch (error) {
+      console.error(error);
       setResponse("Something went wrong. Try again.");
     } finally {
       setLoading(false);
