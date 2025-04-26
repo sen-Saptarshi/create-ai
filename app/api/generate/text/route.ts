@@ -20,6 +20,7 @@ export async function POST(req: Request) {
 
     return new Response(response.text, { status: 200 });
   } catch (error) {
+    console.error(error)
     return new Response("Error generating text", { status: 500 });
   }
 }

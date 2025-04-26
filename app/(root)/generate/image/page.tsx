@@ -15,6 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Download, Sparkles, Shuffle, ImageIcon } from "lucide-react";
 import { enhancePrompt, getCameraAngleModifier, getLightingModifier, getRandomPrompt, getStyleModifier } from "@/lib/prompt-utils";
 import { generateImage } from "@/lib/actions";
+import Image from "next/image";
 
 export default function ImageGenerator() {
   const [prompt, setPrompt] = useState("");
@@ -214,7 +215,7 @@ export default function ImageGenerator() {
             <CardContent className="flex-1 flex flex-col items-center justify-center p-6">
               {image ? (
                 <div className="relative w-full h-full flex flex-col items-center">
-                  <img
+                  <Image
                     ref={imageRef}
                     src={image || "/placeholder.svg"}
                     alt="Generated image"

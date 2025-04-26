@@ -88,7 +88,7 @@ export default function Page() {
           )}
         </Button>
 
-        <Card className="w-full sm:w-[600px] min-h-[450px] max-h-[400px] overflow-x-auto">
+        <Card className="w-full sm:w-[600px] min-h-[120px] max-h-[400px] overflow-x-auto">
           <CardContent className="px-4 text-sm break-words flex justify-center items-center">
             {loading ? (
               <div className="space-y-3 w-full">
@@ -100,7 +100,7 @@ export default function Page() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="prose prose-sm dark:prose-invert max-w-none"
+                className="prose prose-sm dark:prose-invert w-full"
               >
                 <Markdown content={response} />
               </motion.div>
