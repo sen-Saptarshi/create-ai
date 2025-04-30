@@ -80,7 +80,7 @@ export default function Page() {
                     What do you want to learn?
                   </h2>
                   <p className="text-muted-foreground text-sm">
-                    Enter a topic, skill, or subject you're interested in
+                    Enter a topic, skill, or subject you&apos;re interested in
                   </p>
                 </CardHeader>
                 <CardContent className="pb-2">
