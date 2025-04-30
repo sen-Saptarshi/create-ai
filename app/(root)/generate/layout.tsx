@@ -10,6 +10,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     { name: "Home", path: "/", id: 1 },
     { name: "Text Gen", path: "/generate/text", id: 2 },
     { name: "Image Gen", path: "/generate/image", id: 3 },
+    { name: "Learn Anything", path: "/generate/learn", id: 4 },
   ];
 
   const asPath = usePathname();
