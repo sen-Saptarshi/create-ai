@@ -13,9 +13,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, ArrowLeft } from "lucide-react";
+import { Markdown } from "@/components/markdown";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 interface ChapterType {
   title: string;
@@ -28,6 +31,7 @@ export default function Page() {
   const [chapterContent, setChapterContent] =
     useState<ChapterContentType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const storedResponse = localStorage.getItem("response");
@@ -69,6 +73,11 @@ export default function Page() {
 
   return (
     <div className="max-w-3xl mx-auto p-6">
+      <Button onClick={() => router.back()} variant="ghost" className="mb-4">
+        <ArrowLeft className="h-4 w-4 mr-2" />
+        Go back
+      </Button>
+
       <h1 className="text-3xl font-bold mb-2">{chapter.title}</h1>
       <p className="text-muted-foreground mb-8">{chapter.description}</p>
 
@@ -121,13 +130,10 @@ function ChapterContent({
     <div className="space-y-10">
       {/* Theory Section */}
       <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Theory</CardTitle>
-        </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-muted-foreground">
-            {chapterContent.Theory.description}
-          </p>
+          <div className="text-muted-foreground">
+            <Markdown content={chapterContent.Theory.description} />
+          </div>
 
           <div className="mt-6">
             <h3 className="text-lg font-medium mb-3">Learning Resources</h3>
@@ -165,7 +171,9 @@ function ChapterContent({
               <AccordionContent>
                 <div className="p-4 bg-muted/50 rounded-md">
                   <h4 className="text-sm font-semibold mb-2">Answer:</h4>
-                  <p className="text-muted-foreground">{assignment.answer}</p>
+                  <div className="text-muted-foreground">
+                    <Markdown content={assignment.answer} />
+                  </div>
                 </div>
               </AccordionContent>
             </AccordionItem>

@@ -19,7 +19,7 @@ export async function generateContent(prompt: string) {
   const { object: response } = await generateObject({
     model,
     schema: responseSchema,
-    prompt: `You will receive name of a Topic and you need to generate 5-7 chapters for this topic.
+    prompt: `You will receive name of a Topic and you need to generate 5-10 chapters for this topic along with a one liner description.
     Topic name is found in the following prompt.
     Also don't include chapter number in chapter titles.
     Prompt :-  ${prompt}`,
@@ -57,17 +57,26 @@ export async function generateChapterContent({
   const { object: chapterContent } = await generateObject({
     model,
     schema: chapterContentSchema,
-    prompt: `You have some chapters details.
-        You need to generate a theory part and an assignments part for the selected chapter.
-        The theory part contains basic description and a list of important resources or links.
-        And the assignment part contains 3-8 questions along with answer.
-        Some questions from the assignment part should require additional self researching.
-        
-        The selected chapter is - ${JSON.stringify(selectedChapter)}
+    prompt: `
+    You are given a list of chapters, and one chapter has been selected from this list. Your task is to generate both a **Theory** and an **Assignment** section for the selected chapter.
 
-        This is selected from this list of chapters - ${JSON.stringify(
-          chapters
-        )}
+    ### 1. Theory Section
+    - Write a clear, concise, and well-structured explanation of the selected chapter's topic.
+    - Format the content using **Markdown** to create a visually organized and hierarchical structure (e.g. headings, subheadings, bullet points).
+    - Do **not** include the chapter name or its short description—jump straight into the explanation.
+    - At the end of the theory, include a list of **valuable learning resources**, which may include:
+      - YouTube videos
+      - Documentation links
+      - Articles or blogs
+
+    ### 2. Assignment Section
+    - Create **3 to 8 questions** based on the topic.
+    - Each question should include a **concise answer**.
+    - At least **2-3 questions** should encourage the learner to do **additional self-research** while staying on topic. Indicate this explicitly in the question or its answer.
+
+    ### Input
+    - Selected chapter: ${JSON.stringify(selectedChapter)}
+    - Full chapter list: ${JSON.stringify(chapters)}
         `,
   });
 

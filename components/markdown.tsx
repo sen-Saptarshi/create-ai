@@ -20,19 +20,19 @@ export const Markdown: React.FC<MarkdownProps> = ({ content, className }) => {
         components={{
           h1: ({ ...props }) => (
             <h1
-              className="text-4xl font-bold mt-6 mb-4 text-primary"
+              className="text-3xl font-bold mt-6 mb-4 text-primary"
               {...props}
             />
           ),
           h2: ({ ...props }) => (
             <h2
-              className="text-3xl font-semibold mt-5 mb-3 text-primary"
+              className="text-2xl font-semibold mt-5 mb-3 text-primary"
               {...props}
             />
           ),
           h3: ({ ...props }) => (
             <h3
-              className="text-2xl font-semibold mt-4 mb-2 text-primary"
+              className="text-xl font-semibold mt-4 mb-2 text-primary"
               {...props}
             />
           ),
