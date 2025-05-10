@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { ReactNode, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { Menu, X } from "lucide-react";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const paths = [
@@ -73,6 +74,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       </nav>
 
       <main className="flex-1">{children}</main>
+      <Toaster />
     </div>
   );
 }
