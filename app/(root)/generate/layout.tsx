@@ -6,6 +6,8 @@ import { ReactNode, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { Menu, X } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
+import { UserButton } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const paths = [
@@ -47,8 +49,11 @@ export default function Layout({ children }: { children: ReactNode }) {
             ))}
           </ul>
 
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center gap-2">
             <ModeToggle />
+            <Button variant={"outline"} className="rounded-full" size={"icon"}>
+              <UserButton />
+            </Button>
           </div>
         </div>
 
