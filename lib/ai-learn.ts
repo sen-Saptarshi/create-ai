@@ -15,7 +15,7 @@ const responseSchema = z.object({
 export type ResponseType = z.infer<typeof responseSchema>;
 
 export async function generateContent(prompt: string) {
-  const model = google("gemini-1.5-flash-002");
+  const model = google("gemini-2.5-flash");
   const { object: response } = await generateObject({
     model,
     schema: responseSchema,
@@ -53,7 +53,7 @@ export async function generateChapterContent({
   selectedChapter,
   chapters,
 }: generateChapterContentProps) {
-  const model = google("gemini-2.0-flash-001");
+  const model = google("gemini-2.5-flash");
   const { object: chapterContent } = await generateObject({
     model,
     schema: chapterContentSchema,

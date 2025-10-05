@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   try {
     const systemPrompt =
       "You are a helpful AI assistant. Answer questions concisely, clearly, and with a touch of creativity. Use markdown for formatting and include relevant emojis to enhance communication.";
-    const aiModel = google(model ?? "gemini-1.5-flash-002");
+    const aiModel = google(model ?? "gemini-2.5-flash");
     const response = await generateText({
       model: aiModel,
       system: systemPrompt,
