@@ -5,11 +5,20 @@ import { streamText, UIMessage, convertToModelMessages } from "ai";
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages }: { messages: UIMessage[] } = await req.json();
+  const {
+    messages,
+  }: { messages: UIMessage[]; model?: string; system?: string } =
+    await req.json();
+  const { model, system }: { model?: string; system?: string } =
+    messages[0].metadata! || {};
+
+  // console.log(model, system);
 
   const result = streamText({
-    model: google("gemini-2.5-flash-lite"),
-    system: "You are a helpful AI assistant. Answer questions concisely, clearly, and with a touch of creativity. Use markdown for formatting and include relevant emojis to enhance communication.",
+    model: google(model || "gemini-2.5-flash-lite"),
+    system:
+      system ||
+      "You are a helpful AI assistant. Answer questions concisely, clearly, and with a touch of creativity. Use markdown for formatting and include relevant emojis to enhance communication.",
     messages: convertToModelMessages(messages),
   });
 

@@ -6,8 +6,9 @@ import { Markdown } from "@/components/markdown";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { Paperclip, SendIcon, X, FileText } from "lucide-react";
+import { Paperclip, SendIcon, X, FileText, SparkleIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { ChatSettings } from "@/components/ChatSettings";
 
 async function convertFilesToDataURLs(
   files: FileList
@@ -39,6 +40,12 @@ async function convertFilesToDataURLs(
 }
 
 export default function Chat() {
+  const [model, setModel] = useState("gemini-2.5-flash-lite");
+  const [systemPrompt, setSystemPrompt] = useState(
+    "You are a helpful AI assistant. " +
+      "Answer questions concisely, clearly, and with a touch of creativity. " +
+      "Use markdown for formatting and include relevant emojis to enhance communication."
+  );
   const [input, setInput] = useState("");
   const [files, setFiles] = useState<FileList | undefined>();
   const [previews, setPreviews] = useState<
@@ -65,6 +72,7 @@ export default function Chat() {
     sendMessage({
       role: "user",
       parts: [{ type: "text", text: input }, ...fileParts],
+      metadata: { model, system: systemPrompt },
     });
 
     setInput("");
@@ -83,80 +91,104 @@ export default function Chat() {
 
   return (
     <div className="flex flex-col w-full max-w-2xl mx-auto h-[calc(100vh-7rem)] overflow-y-auto bg-background">
-      {/* Message list */}
-      <div className="flex flex-col gap-4 px-4 py-6">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={cn(
-              "flex w-full",
-              message.role === "user" ? "justify-end" : "justify-start"
-            )}
-          >
-            <div
-              className={cn(
-                "rounded-2xl px-4 py-2 text-sm leading-relaxed",
-                message.role === "user"
-                  ? "bg-primary text-primary-foreground rounded-br-sm border-transparent max-w-[85%]"
-                  : "text-foreground"
-              )}
-            >
-              {message.parts.map((part, i) => {
-                if (part.type === "text") {
-                  return message.role === "user" ? (
-                    <pre className="font-sans" key={`${message.id}-${i}`}>{part.text}</pre>
-                  ) : (
-                    <Markdown
-                      key={`${message.id}-${i}`}
-                      content={part.text}
-                      className="prose prose-sm dark:prose-invert"
-                    />
-                  );
-                }
+      {/* Empty Screen */}
+      {messages.length === 0 ? (
+        <div className="flex flex-col items-center justify-center text-center h-full gap-6 p-6">
+          <h1 className="text-3xl font-bold">
+            AI Chat <SparkleIcon className="inline-block size-5" />{" "}
+          </h1>
+          <p className="text-sm text-muted-foreground max-w-sm">
+            Start chatting with your AI assistant. You can send text messages
+            and attach files for context.
+          </p>
 
-                if (part.type === "file") {
-                  // If it's an image, show the image inside the bubble
-                  if (part.mediaType.startsWith("image/")) {
-                    return (
-                      <div key={`${message.id}-img-${i}`} className="mt-2">
-                        <img
-                          src={part.url}
-                          alt={part.filename}
-                          onError={(e) =>
-                            ((e.target as HTMLImageElement).style.display =
-                              "none")
-                          }
-                          className="rounded-lg max-w-[250px] border shadow-md"
+          <ChatSettings
+            model={model}
+            setModel={setModel}
+            systemPrompt={systemPrompt}
+            setSystemPrompt={setSystemPrompt}
+          />
+        </div>
+      ) : (
+        <>
+          {/* Message list */}
+          <div className="flex flex-col gap-4 px-4 py-6">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={cn(
+                  "flex w-full",
+                  message.role === "user" ? "justify-end" : "justify-start"
+                )}
+              >
+                <div
+                  className={cn(
+                    "rounded-2xl px-4 py-2 text-sm leading-relaxed",
+                    message.role === "user"
+                      ? "bg-primary text-primary-foreground rounded-br-sm border-transparent max-w-[85%]"
+                      : "text-foreground"
+                  )}
+                >
+                  {message.parts.map((part, i) => {
+                    if (part.type === "text") {
+                      return message.role === "user" ? (
+                        <pre className="font-poppins" key={`${message.id}-${i}`}>
+                          {part.text}
+                        </pre>
+                      ) : (
+                        <Markdown
+                          key={`${message.id}-${i}`}
+                          content={part.text}
+                          className="prose prose-sm dark:prose-invert"
                         />
-                      </div>
-                    );
-                  }
+                      );
+                    }
 
-                  // For PDF or other files — show an icon instead of filename text
-                  return (
-                    <div
-                      key={`${message.id}-fileicon-${i}`}
-                      className="mt-2 flex items-center justify-center w-20 h-20 bg-muted rounded-lg"
-                    >
-                      <a
-                        href={part.url}
-                        download={part.filename}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <FileText className="w-8 h-8 text-muted-foreground" />
-                      </a>
-                    </div>
-                  );
-                }
+                    if (part.type === "file") {
+                      // If it's an image, show the image inside the bubble
+                      if (part.mediaType.startsWith("image/")) {
+                        return (
+                          <div key={`${message.id}-img-${i}`} className="mt-2">
+                            <img
+                              src={part.url}
+                              alt={part.filename}
+                              onError={(e) =>
+                                ((e.target as HTMLImageElement).style.display =
+                                  "none")
+                              }
+                              className="rounded-lg max-w-[250px] border shadow-md"
+                            />
+                          </div>
+                        );
+                      }
 
-                return null;
-              })}
-            </div>
+                      // For PDF or other files — show an icon instead of filename text
+                      return (
+                        <div
+                          key={`${message.id}-fileicon-${i}`}
+                          className="mt-2 flex items-center justify-center w-20 h-20 bg-muted rounded-lg"
+                        >
+                          <a
+                            href={part.url}
+                            download={part.filename}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <FileText className="w-8 h-8 text-muted-foreground" />
+                          </a>
+                        </div>
+                      );
+                    }
+
+                    return null;
+                  })}
+                </div>
+              </div>
+            ))}
+            <div ref={endRef} />
           </div>
-        ))}
-        <div ref={endRef} />
-      </div>
+        </>
+      )}
 
       {/* Floating file preview */}
       {previews.length > 0 && (
